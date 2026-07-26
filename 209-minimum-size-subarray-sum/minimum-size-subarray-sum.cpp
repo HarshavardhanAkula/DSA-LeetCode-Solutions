@@ -7,7 +7,7 @@ public:
 
         while (r < nums.size()) {
             sum += nums[r];
-
+            
             while (sum >= target) {
                 minlength = min(minlength, r - l + 1);
                 sum -= nums[l];
