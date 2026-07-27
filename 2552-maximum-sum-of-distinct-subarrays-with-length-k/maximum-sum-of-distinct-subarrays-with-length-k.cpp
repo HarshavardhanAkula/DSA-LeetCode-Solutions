@@ -1,33 +1,42 @@
 class Solution {
 public:
     long long maximumSubarraySum(vector<int>& nums, int k) {
-        int n = nums.size();
-        unordered_set<int> elements;
-        long long current_sum = 0;
-        long long max_sum = 0;
-        int begin = 0;
-        
-        for (int end = 0; end < n; end++) {
-            if (elements.find(nums[end]) == elements.end()) {
-                current_sum += nums[end];
-                elements.insert(nums[end]);
-                
-                if (end - begin + 1 == k) {
-                    max_sum = max(max_sum, current_sum);
-                    current_sum -= nums[begin];
-                    elements.erase(nums[begin]);
-                    begin++;
-                }
-            } else {
-                while (nums[begin] != nums[end]) {
-                    current_sum -= nums[begin];
-                    elements.erase(nums[begin]);
-                    begin++;
-                }
-                begin++;
-            }
+
+        unordered_map<int, int> freq;
+        long long sum = 0;
+        long long ans = 0;
+
+        // Build the first window
+        for (int i = 0; i < k; i++) {
+            sum += nums[i];
+            freq[nums[i]]++;
         }
-        
-        return max_sum;
+
+        // Check the first window
+        if (freq.size() == k)
+            ans = sum;
+
+        // Slide the window
+        int l=0;
+        for (int i = k; i < nums.size(); i++) {
+
+            // Add new element
+            sum += nums[i];
+            freq[nums[i]]++;
+
+            // Remove old element
+            sum -= nums[l];
+            freq[nums[l]]--;
+
+            if (freq[nums[l]] == 0)
+                freq.erase(nums[l]);
+
+            // Update answer if all elements are distinct
+            if (freq.size() == k)
+                ans = max(ans, sum);
+                l++;
+        }
+
+        return ans;
     }
 };
