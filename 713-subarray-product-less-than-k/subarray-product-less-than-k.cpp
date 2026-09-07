@@ -14,7 +14,7 @@ public:
                 prod/=nums[left];
                 left++;
             }
-            count+=right-left+1;
+            count+=(right-left+1);
         }
         return count;
   
