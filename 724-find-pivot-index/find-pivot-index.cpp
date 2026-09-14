@@ -12,6 +12,7 @@ public:
                 return j;
             }
             left+=nums[j];
+        
         }
         return -1;
     }
